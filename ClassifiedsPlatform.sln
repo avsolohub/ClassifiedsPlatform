@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36109.1 d17.14
+VisualStudioVersion = 17.14.36109.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClassifiedsPlatform.Domain", "ClassifiedsPlatform.Domain\ClassifiedsPlatform.Domain.csproj", "{7B9A6726-2719-4E8D-B813-467CDCCE1383}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClassifiedsPlatform.Domain.Tests", "ClassifiedsPlatform.Domain.Tests\ClassifiedsPlatform.Domain.Tests.csproj", "{E4A5B965-0643-4944-8994-7BAB7936590A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClassifiedsPlatform.WPF", "ClassifiedsPlatform.WPF\ClassifiedsPlatform.WPF.csproj", "{F1090493-811B-41C9-958C-74BD38176AB7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{E4A5B965-0643-4944-8994-7BAB7936590A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E4A5B965-0643-4944-8994-7BAB7936590A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E4A5B965-0643-4944-8994-7BAB7936590A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1090493-811B-41C9-958C-74BD38176AB7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1090493-811B-41C9-958C-74BD38176AB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1090493-811B-41C9-958C-74BD38176AB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1090493-811B-41C9-958C-74BD38176AB7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

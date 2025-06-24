@@ -23,7 +23,7 @@ namespace ClassifiedsPlatform.Domain.Tests
 
             // 3. Assert (Перевірка результату)
             // Перевіряємо, чи отриманий результат відповідає очікуваному.
-            // До цього рядка виконання зараз не дійде.
+            
             Assert.AreEqual(AdStatus.Active, ad.Status);
         }
         [TestMethod]
