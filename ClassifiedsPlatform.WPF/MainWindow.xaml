@@ -5,9 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ClassifiedsPlatform.WPF"
         mc:Ignorable="d"
-        Title="Платформа оголошень" Height="500" Width="950" WindowStartupLocation="CenterScreen">
+        Title="Платформа оголошень" Height="500" Width="1050" WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <Style x:Key="VisibleWhenLoggedInStyle" TargetType="FrameworkElement">
             <Setter Property="Visibility" Value="Collapsed"/>
             <Style.Triggers>
@@ -41,24 +42,27 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-
                 <StackPanel Grid.Column="0" Orientation="Horizontal">
                     <StackPanel Orientation="Horizontal" Style="{StaticResource VisibleWhenLoggedOutStyle}">
                         <TextBlock Text="Email:" VerticalAlignment="Center" Margin="5"/>
                         <TextBox Width="120" Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"/>
                         <TextBlock Text="Пароль:" VerticalAlignment="Center" Margin="10,5,5,5"/>
                         <TextBox Width="120" Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"/>
-                        <Button Content="Вхід" Width="60" Margin="10,0" Command="{Binding LoginCommand}"/>
+                        <Button Content="Вхід" Width="60" Margin="10,0,5,0" Command="{Binding LoginCommand}"/>
+                        <Button Content="Реєстрація" Width="90" Command="{Binding OpenRegistrationWindowCommand}"/>
                     </StackPanel>
                     <TextBlock Style="{StaticResource VisibleWhenLoggedInStyle}" Text="{Binding CurrentUser.Name, StringFormat='Вітаємо, {0}!'}" FontWeight="Bold" FontSize="14" VerticalAlignment="Center"/>
                 </StackPanel>
-
                 <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
                     <StackPanel Orientation="Horizontal" Style="{StaticResource VisibleWhenLoggedInStyle}">
                         <Button Content="Адмін-панель" Width="120" Margin="10,0,0,0" Command="{Binding OpenAdminPanelCommand}" Style="{StaticResource VisibleWhenAdminStyle}"/>
                         <Button Content="Створити оголошення" Width="140" Margin="10,0,0,0" Command="{Binding OpenCreateAdWindowCommand}"/>
                         <Button Content="Вийти" Width="60" Margin="10,0,0,0" Command="{Binding LogoutCommand}"/>
                     </StackPanel>
+
+                    <TextBlock Text="Категорія:" VerticalAlignment="Center" Margin="10,5,5,5"/>
+                    <ComboBox Width="150" ItemsSource="{Binding FilterCategories}" SelectedItem="{Binding SelectedFilterCategory}" DisplayMemberPath="Name" VerticalAlignment="Center"/>
+
                     <TextBlock Text="Пошук:" VerticalAlignment="Center" Margin="10,5,5,5"/>
                     <TextBox Width="200" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"/>
                 </StackPanel>
@@ -68,9 +72,20 @@
         <ListView ItemsSource="{Binding DisplayedAds}">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Назва" Width="250" DisplayMemberBinding="{Binding Title}" />
-                    <GridViewColumn Header="Опис" Width="400" DisplayMemberBinding="{Binding Description}" />
-                    <GridViewColumn Header="Ціна" Width="120" DisplayMemberBinding="{Binding Price, StringFormat={}{0:C}, ConverterCulture=uk-UA}" />
+                    <GridViewColumn Header="Назва" Width="200" DisplayMemberBinding="{Binding Title}" />
+                    <GridViewColumn Header="Опис" Width="300" DisplayMemberBinding="{Binding Description}" />
+                    <GridViewColumn Header="Ціна" Width="100" DisplayMemberBinding="{Binding Price, StringFormat={}{0:C}, ConverterCulture=uk-UA}" />
+                    <GridViewColumn Header="Категорія" Width="120" DisplayMemberBinding="{Binding CategoryName}"/>
+                    <GridViewColumn Header="Дії" Width="150">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" Visibility="{Binding IsOwner, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                    <Button Content="Редагувати" Width="70" Margin="2" Command="{Binding DataContext.EditAdCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}"/>
+                                    <Button Content="Видалити" Width="70" Margin="2" Command="{Binding DataContext.DeleteAdCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
                 </GridView>
             </ListView.View>
         </ListView>

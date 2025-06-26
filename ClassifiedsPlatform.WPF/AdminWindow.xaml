@@ -5,26 +5,75 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ClassifiedsPlatform.WPF"
         mc:Ignorable="d"
-        Title="Панель адміністратора" Height="450" Width="600" WindowStartupLocation="CenterOwner">
-    <Grid Margin="10">
-        <ListView ItemsSource="{Binding Users}" d:ItemsSource="{d:SampleData ItemCount=5}">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="ID" Width="50" DisplayMemberBinding="{Binding Id}"/>
-                    <GridViewColumn Header="Email" Width="200" DisplayMemberBinding="{Binding Email}"/>
-                    <GridViewColumn Header="Статус" Width="100" DisplayMemberBinding="{Binding Status}"/>
-                    <GridViewColumn Header="Дія" Width="120">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <Button Content="Блокувати" 
-                                        Command="{Binding DataContext.BlockUserCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
-                                        CommandParameter="{Binding}"
-                                        IsEnabled="{Binding CanBeBlocked}"/>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                </GridView>
-            </ListView.View>
-        </ListView>
-    </Grid>
+        Title="Панель адміністратора" Height="450" Width="800" WindowStartupLocation="CenterOwner">
+    <TabControl Margin="10">
+        <TabItem Header="Керування користувачами">
+            <ListView ItemsSource="{Binding Users}">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="ID" Width="50" DisplayMemberBinding="{Binding Id}"/>
+                        <GridViewColumn Header="Email" Width="200" DisplayMemberBinding="{Binding Email}"/>
+                        <GridViewColumn Header="Ім'я" Width="150" DisplayMemberBinding="{Binding Name}"/>
+                        <GridViewColumn Header="Статус" Width="100" DisplayMemberBinding="{Binding Status}"/>
+                        <GridViewColumn Header="Дії" Width="200">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Button Width="100" Margin="2"
+                                                Content="{Binding BlockUnblockButtonText}"
+                                                IsEnabled="{Binding CanBeDeleted}"
+                                                Command="{Binding DataContext.ToggleBlockStatusCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
+                                                CommandParameter="{Binding}"/>
+
+                                        <Button Content="Видалити" Width="80" Margin="2"
+                                                IsEnabled="{Binding CanBeDeleted}"
+                                                Command="{Binding DataContext.DeleteUserCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
+                                                CommandParameter="{Binding}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </TabItem>
+
+        <TabItem Header="Модерація оголошень">
+            <ListView ItemsSource="{Binding PendingAds}">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Назва" Width="250" DisplayMemberBinding="{Binding Title}"/>
+                        <GridViewColumn Header="Ціна" Width="100" DisplayMemberBinding="{Binding Price, StringFormat={}{0:C}, ConverterCulture=uk-UA}"/>
+                        <GridViewColumn Header="Дії" Width="180">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Button Content="Схвалити" Width="80" Margin="2" Command="{Binding DataContext.ApproveAdCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}"/>
+                                        <Button Content="Відхилити" Width="80" Margin="2" Command="{Binding DataContext.RejectAdCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </TabItem>
+        <TabItem Header="Керування категоріями">
+            <DockPanel>
+                <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="0,10,0,0">
+                    <TextBlock Text="Назва нової категорії:" VerticalAlignment="Center"/>
+                    <TextBox Width="200" Margin="10,0" Text="{Binding NewCategoryName, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Button Content="Додати" Width="100" Command="{Binding AddCategoryCommand}"/>
+                </StackPanel>
+                <ListView ItemsSource="{Binding Categories}">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="ID" Width="50" DisplayMemberBinding="{Binding Id}"/>
+                            <GridViewColumn Header="Назва" Width="300" DisplayMemberBinding="{Binding Name}"/>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </DockPanel>
+        </TabItem>
+    </TabControl>
 </Window>
